@@ -1,5 +1,5 @@
 # Koi-Ponds
-A React project to loosely resemble the game Star Realms.
+A React project to loosely resemble the card game Star Realms.
 
 
 # Dependencies
