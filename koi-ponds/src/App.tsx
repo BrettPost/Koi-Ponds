@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Card from './Components/Card/Card';
 import typeCard from './Utility/Card';
 import FaceDownCard from './Components/Card/FaceDownCard';
 import DiscardPile from './Components/Card/DiscardPile';
 import './App.css';
+
+var scout = {name: "Scout", image: "", primaryAbility: "1 Trade"};
+var viper = {name: "Viper", image: "", primaryAbility: "2 Combat"};
+var explorer = {name: "Explorer", image: "", primaryAbility: "2 Trade"};
 
 var tradeDeck: typeCard[] = [];
 var tradeRow: typeCard[] = [];
@@ -19,10 +23,10 @@ var myDeck: typeCard[] = [];
 var myDiscard: typeCard[] = [];
 var myHand: typeCard[] = [];
 
-var scout = {name: "Scout", image: "", primaryAbility: "2 trade"};
-var viper = {name: "Viper", image: "", primaryAbility: "2 Combat"};
 
-function newGame() {
+
+function NewGame(setPlayerTurn: React.Dispatch<React.SetStateAction<string>>) {
+  setPlayerTurn(Math.random() < 0.5 ? "Player 1" : "Player 2");
   for(var i = 0; i < 8; i++) {
     myDeck.push(scout);
     opponentDeck.push(scout);
@@ -64,7 +68,7 @@ function isPileEmpty(deck: typeCard[], isDiscard: boolean) {
     }
     return <Card info={scrapCard} />
   } else {                                            // Regular Deck has cards
-    return <FaceDownCard position='trade-deck' />
+    return <FaceDownCard />
   }
 }
 
@@ -77,6 +81,7 @@ function moveCard(sourceDeck: typeCard[], targetPile: typeCard[]): typeCard {
 
   // push card to new location
   try {
+    // Learn how to get rid of question mark
     selectedCard = {...sourceDeck.pop()!};
     targetPile.push(selectedCard);
   } catch (err) {
@@ -87,9 +92,13 @@ function moveCard(sourceDeck: typeCard[], targetPile: typeCard[]): typeCard {
 }
 
 function App() {
+  // TODO: Extract all functions out of App and into a "Game Board" Component
+  // Maybe just change this to a useContext
+  const [playerTurn, setPlayerTurn] = useState("Player 1");
+
   return (
     <div className="App bg-green-700">
-      <button type="submit" onClick={() => newGame()}>New game</button>
+      <button type="submit" onClick={() => {NewGame(setPlayerTurn); console.log(playerTurn)}}>New game</button>
       <div className='grid grid-cols-9 grid-rows-5'>
 
         {/* OpponentDiscard */}
@@ -123,13 +132,13 @@ function App() {
         </div>
         {/* Explorers */}
         <div className='col-start-8 row-start-3 col-span-1 '>
-          <Card info={{name: "Explorer", image: "", primaryAbility: "2 trade"}}/>
+          <Card info={explorer}/>
         </div>
         
         
         {/* MyBases */}
         <div className='col-start-1 row-start-4 col-span-2 row-span-2 flex'>
-
+          {myBases.map((base) => <Card info={base}/>)}
         </div>
         {/* MyHand */}
         <div className='col-start-3 row-start-5 col-span-5 flex'>

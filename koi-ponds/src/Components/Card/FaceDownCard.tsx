@@ -1,7 +1,7 @@
 import React from 'react';
 import CardImage from '../../Assets/KoiPondsCardBack.png'
 
-function FaceDownCard(props: {position: string}) {
+function FaceDownCard(props: {}) {
     
     
     return (
