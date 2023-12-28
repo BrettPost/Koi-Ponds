@@ -2,6 +2,29 @@ import React from 'react';
 import ScoutShip from '../../Assets/ScoutShip.png';
 import typeCard from './../../Utility/Card';
 
+var makeErrorsHappy: typeCard[] = [];
+var oneMoreLol: typeCard[] = [];
+
+const moveCard = (sourceDeck: typeCard[], targetPile: typeCard[]) => {
+    var selectedCard: typeCard = {
+      name: "Error Card",
+      image: "",
+      primaryAbility: "",
+    }
+  
+    // push card to new location
+    try {
+      // Learn how to get rid of question mark
+      selectedCard = {...sourceDeck.pop()!};
+      targetPile.push(selectedCard);
+    } catch (err) {
+      console.log(err)
+    }
+    
+    //return selectedCard;
+    return <h1></h1>
+  }
+
 // {cardName: string, image: string, primaryAbility: string, allyAbility?: string, scrapAbility?: string, faction?: string, cost?: number}
 function Card(props: {info: typeCard}) {
     
@@ -25,7 +48,7 @@ function Card(props: {info: typeCard}) {
                 </div>
 
                 {/* Card Footer */}
-                <div className='col-span-3 row-span-1 flex justify-center items-center'>
+                <div onClick={moveCard(makeErrorsHappy, oneMoreLol)} className='col-span-3 row-span-1 flex justify-center items-center'>
                     <h1 className=''>Abilities</h1>
                 </div>
                 

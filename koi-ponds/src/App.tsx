@@ -5,6 +5,17 @@ import FaceDownCard from './Components/Card/FaceDownCard';
 import DiscardPile from './Components/Card/DiscardPile';
 import './App.css';
 
+enum players {
+  player1 = 'player 1',
+  player2 = 'player 2'
+};
+
+enum phases {
+  main = 'main phase',
+  discard = 'discard phase',
+  draw = 'draw phase'
+}
+
 var scout = {name: "Scout", image: "", primaryAbility: "1 Trade"};
 var viper = {name: "Viper", image: "", primaryAbility: "2 Combat"};
 var explorer = {name: "Explorer", image: "", primaryAbility: "2 Trade"};
@@ -25,8 +36,9 @@ var myHand: typeCard[] = [];
 
 
 
-function NewGame(setPlayerTurn: React.Dispatch<React.SetStateAction<string>>) {
-  setPlayerTurn(Math.random() < 0.5 ? "Player 1" : "Player 2");
+function NewGame(setPlayerTurn: React.Dispatch<React.SetStateAction<players>>) {
+  setPlayerTurn(Math.random() < 0.5 ? players.player1 : players.player2);
+
   for(var i = 0; i < 8; i++) {
     myDeck.push(scout);
     opponentDeck.push(scout);
@@ -37,6 +49,8 @@ function NewGame(setPlayerTurn: React.Dispatch<React.SetStateAction<string>>) {
   }
   shuffleDeck(myDeck);
   shuffleDeck(opponentDeck);
+
+  
 }
 
 function shuffleDeck(deck: typeCard[]) {
@@ -72,29 +86,11 @@ function isPileEmpty(deck: typeCard[], isDiscard: boolean) {
   }
 }
 
-function moveCard(sourceDeck: typeCard[], targetPile: typeCard[]): typeCard {
-  var selectedCard: typeCard = {
-    name: "Error Card",
-    image: "",
-    primaryAbility: "",
-  }
-
-  // push card to new location
-  try {
-    // Learn how to get rid of question mark
-    selectedCard = {...sourceDeck.pop()!};
-    targetPile.push(selectedCard);
-  } catch (err) {
-    console.log(err)
-  }
-  
-  return selectedCard;
-}
-
 function App() {
   // TODO: Extract all functions out of App and into a "Game Board" Component
   // Maybe just change this to a useContext
-  const [playerTurn, setPlayerTurn] = useState("Player 1");
+  const [playerTurn, setPlayerTurn] = useState<players>(players.player1);
+  const [phase, setPhase] = useState<phases>(phases.main);
 
   return (
     <div className="App bg-green-700">
